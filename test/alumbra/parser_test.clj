@@ -4,7 +4,7 @@
              [generators :as gen]
              [properties :as prop]]
             [alumbra.parser :as parser]
-            [clojure.spec :as s]
+            [clojure.spec.alpha :as s]
             alumbra.parser.spec
             alumbra.spec))
 

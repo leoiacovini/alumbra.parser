@@ -4,17 +4,17 @@
              [schema :as schema]]
             [alumbra.parser :as parser]
             [alumbra.spec :as alumbra]
-            [clojure.spec :as s]))
+            [clojure.spec.alpha :as s]))
 
 ;; ## Transformations
 
 (s/fdef document/transform
         :args (s/cat :ast sequential?)
-        :ret  :alumbra/document)
+        :ret :alumbra/document)
 
 (s/fdef schema/transform
         :args (s/cat :ast sequential?)
-        :ret  :alumbra/schema)
+        :ret :alumbra/schema)
 
 ;; ## Parsers
 
