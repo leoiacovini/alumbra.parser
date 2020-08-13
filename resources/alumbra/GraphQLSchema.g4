@@ -51,7 +51,7 @@ definition
 // --------------- OUTPUT TYPE ---------------
 
 typeDefinition
-    : K_TYPE typeName typeImplements? directives? typeDefinitionFields
+    : description? K_TYPE typeName typeImplements? directives? typeDefinitionFields
     ;
 
 typeDefinitionFields
@@ -75,7 +75,7 @@ typeDefinitionFieldType
     ;
 
 fieldName
-    : anyName
+    : description? anyName
     ;
 
 arguments
@@ -83,7 +83,7 @@ arguments
     ;
 
 argument
-    : argumentName ':' argumentType defaultValue? directives?
+    : description? argumentName ':' argumentType defaultValue? directives?
     ;
 
 argumentName
@@ -101,7 +101,7 @@ defaultValue
 // --------------- INTERFACE ---------------
 
 interfaceDefinition
-    : K_INTERFACE typeName directives? typeDefinitionFields
+    : description? K_INTERFACE typeName directives? typeDefinitionFields
     ;
 
 // --------------- SCHEMA ---------------
@@ -121,7 +121,7 @@ schemaType
 // --------------- ENUM ---------------
 
 enumDefinition
-    : K_ENUM typeName directives? enumDefinitionFields
+    : description? K_ENUM typeName directives? enumDefinitionFields
     ;
 
 enumDefinitionFields
@@ -133,7 +133,7 @@ enumDefinitionField
     ;
 
 enumDefinitionFieldName
-    : anyName
+    : description? anyName
     ;
 
 enumDefinitionType
@@ -147,7 +147,7 @@ enumDefinitionIntValue
 // --------------- UNION ---------------
 
 unionDefinition
-    : K_UNION typeName '=' unionDefinitionTypes directives?
+    : description?  K_UNION typeName '=' unionDefinitionTypes directives?
     ;
 
 unionDefinitionTypes
@@ -157,7 +157,7 @@ unionDefinitionTypes
 // --------------- INPUT TYPE ---------------
 
 inputTypeDefinition
-    : K_INPUT typeName directives? inputTypeDefinitionFields
+    : description? K_INPUT typeName directives? inputTypeDefinitionFields
     ;
 
 inputTypeDefinitionFields
@@ -175,7 +175,7 @@ inputTypeDefinitionFieldType
 // --------------- DIRECTIVES ---------------
 
 directiveDefinition
-    : K_DIRECTIVE directiveName arguments? 'on' directiveLocations
+    : description? K_DIRECTIVE directiveName arguments? 'on' directiveLocations
     ;
 
 directiveName
@@ -193,13 +193,13 @@ directiveLocation
 // --------------- EXTEND TYPE ---------------
 
 typeExtensionDefinition
-    : K_EXTEND K_TYPE typeName typeImplements? typeDefinitionFields
+    : description? K_EXTEND K_TYPE typeName typeImplements? typeDefinitionFields
     ;
 
 // --------------- SCALAR ---------------
 
 scalarDefinition
-    : K_SCALAR typeName
+    : description? K_SCALAR typeName
     ;
 
 // --------------- TYPES ---------------
@@ -304,6 +304,13 @@ directiveArgument
 directiveArgumentValue
     : value
     ;
+
+// --------------- DESCRIPTION ----------
+
+description
+  : StringValue
+  | BlockStringValue
+  ;
 
 // --------------- BOOLEAN---------------
 
@@ -430,8 +437,20 @@ Digit
 
 // --------------- STRING ---------------
 
+fragment DoubleQuote
+   : '"'
+   ;
+
+fragment TripleQuote
+  : '"""'
+  ;
+
 StringValue
-    : '"' (~(["\\\n\r\u2028\u2029])|EscapedChar)* '"'
+    : DoubleQuote (~(["\\\n\r\u2028\u2029])|EscapedChar)* DoubleQuote
+    ;
+
+BlockStringValue
+    : TripleQuote (.)*? TripleQuote
     ;
 
 fragment EscapedChar

@@ -115,6 +115,7 @@
 
      :type                         (t/unwrap)
      :namedType                    (traverse-named-type)
+     :description                  (parse-value :description read-string-literal)
      :nonNullType                  (traverse-non-null-type)
      :listType                     (traverse-list-type)
      :typeName                     (t/as :alumbra/type-name read-name)
